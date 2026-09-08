@@ -40,31 +40,57 @@ addEventListener("DOMContentLoaded", async () => {
     });
 
     containerPendentes.addEventListener("click", async (event) => {
-    const botao = event.target.closest(".btn-aceitar, .btn-recusar");
-    if (!botao) return; // clique não foi em nenhum dos dois botões, ignora
+        const botao = event.target.closest(".btn-aceitar, .btn-recusar");
+        if (!botao) return; // clique não foi em nenhum dos dois botões, ignora
 
-    const id = botao.dataset.id;
-    const novoStatus = botao.classList.contains("btn-aceitar") ? "Aceito" : "Recusado";
+        const id = botao.dataset.id;
+        const novoStatus = botao.classList.contains("btn-aceitar") ? "Aceito" : "Recusado";
+
+        try {
+            const resposta = await fetch(`/api/solicitacoes/${id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ status: novoStatus })
+            });
+
+            if (!resposta.ok) {
+                throw new Error(`Erro ao atualizar solicitação: ${resposta.status}`);
+            }
+
+            // reconsulta total: recarrega a lista do zero refletindo o novo status
+            location.reload();
+            // (ou, melhor, chamar de novo a função que faz o fetch + renderização,
+            // se você tiver extraído isso pra uma função nomeada)
+
+        } catch (erro) {
+            console.error(erro);
+            alert("Não foi possível atualizar a solicitação. Tente novamente.");
+        }
+    });
+
+    const buttonReset = document.getElementById("button-reset")
+    buttonReset.addEventListener("click", async () => {
+
+    if (!confirm("⚠️Tem certeza que deseja APAGAR TODOS os nomes da lista?⚠️")) {
+        return;
+    }
 
     try {
-        const resposta = await fetch(`/api/solicitacoes/${id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: novoStatus })
+        const resposta = await fetch("/api/solicitacoes", {
+            method: "DELETE"
         });
 
-        if (!resposta.ok) {
-            throw new Error(`Erro ao atualizar solicitação: ${resposta.status}`);
-        }
+        const resultado = await resposta.json();
 
-        // reconsulta total: recarrega a lista do zero refletindo o novo status
-        location.reload(); 
-        // (ou, melhor, chamar de novo a função que faz o fetch + renderização,
-        // se você tiver extraído isso pra uma função nomeada)
+        if (resultado.sucesso) {
+            alert(`Solicitações apagadas: ${resultado.linhasApagadas}`);
+        } else {
+            alert("Erro ao resetar solicitações.");
+        }
 
     } catch (erro) {
         console.error(erro);
-        alert("Não foi possível atualizar a solicitação. Tente novamente.");
+        alert("Erro de conexão com o servidor.");
     }
 });
 });

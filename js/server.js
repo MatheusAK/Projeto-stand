@@ -79,6 +79,20 @@ app.post("/api/solicitacoes", (req, res) => {
     }
 });
 
+app.delete("/api/solicitacoes", (req, res) => {
+    try {
+        const stmt = db.prepare("DELETE FROM solicitacoes");
+        const resultado = stmt.run();
+        const resetSequence = db.prepare("DELETE FROM sqlite_sequence WHERE name = 'solicitacoes'");
+        resetSequence.run();
+
+        res.json({ sucesso: true, linhasApagadas: resultado.changes });
+    } catch (erro) {
+        console.error(erro);
+        res.status(500).json({ erro: "Erro ao resetar solicitações." });
+    }
+});
+
 
 
 app.listen(8080, () => {

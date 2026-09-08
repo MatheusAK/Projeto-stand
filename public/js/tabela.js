@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const tdOcupante = document.createElement("td");
             solicitacoes.forEach(solicitacao => {
-                if (solicitacao.id_horario == item.id_horario) {
+                if (solicitacao.id_horario == item.id_horario && solicitacao.status !== "Pendente") {
                     tdOcupante.textContent = (`${tdOcupante.textContent} ${solicitacao.pessoa};`);
                 }
             });
