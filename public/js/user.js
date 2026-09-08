@@ -62,6 +62,7 @@ buttonEnviar.addEventListener("click", async () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ pessoa: nome.value, id_horario: selectHorario.value })
         });
+        alert("Solicitação Enviada!O irmão responsável vai adicionar seu nome na tabela em breve.");
 
         if (!resposta.ok) {
             throw new Error(`Erro ao enviar solicitação: ${resposta.status}`);

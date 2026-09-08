@@ -11,29 +11,37 @@
 <body>
     <div class="main">
         <h1>Dê seu nome para o stand!</h1>
-        <div class="horarios">
+        <div class="container">
             <h2>Horários</h2>
             <div class="tabelas" id="tabelas">
-                
+
             </div>
         </div>
         <div class="form">
-            <input id="nome" class="input" type="text" name="name" placeholder="Digite seu nome" required>
+            <h2>Faça uma solicitação de horário</h2>
 
+            <label for="nome">Insira o seu nome ou da dupla</label>
+            <input id="nome" class="input" type="text" name="name" placeholder="Digite seu nome e o da sua dupla"
+                required>
+
+            <label for="dia">Selecione o dia que você vai ficar no stand</label>
             <select id="dia" class="input" name="category" required>
                 <option disabled selected value="">Selecione um dia</option>
             </select>
 
+            <label for="horario">Selecione o horário que você quer ficar no stand</label>
             <select id="horario" class="input" name="time" disabled required>
                 <option value="" disabled selected>Selecione um horário</option>
-
             </select>
-            <button id="enviar" class="button-disabled" type="submit" disabled>Enviar</button>
+
+            <button id="enviar" class="button-disabled" type="submit" disabled>
+                Enviar
+            </button>
         </div>
     </div>
-        <script src="js/form_visuals.js"></script>
-        <script src="js/user.js"></script>
-        <script src="js/tabela.js"></script>
+    <script src="js/form_visuals.js"></script>
+    <script src="js/user.js"></script>
+    <script src="js/tabela.js"></script>
 </body>
 
 </html>

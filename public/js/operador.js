@@ -84,6 +84,7 @@ addEventListener("DOMContentLoaded", async () => {
 
         if (resultado.sucesso) {
             alert(`Solicitações apagadas: ${resultado.linhasApagadas}`);
+            location.reload();
         } else {
             alert("Erro ao resetar solicitações.");
         }
