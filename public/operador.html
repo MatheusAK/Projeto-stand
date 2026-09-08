@@ -11,17 +11,19 @@
 <body>
     <div class="main">
         <h1 class="title">Gerenciar Solicitações</h1>
-        <div class="solicitacoes">
+
+        <div class="container">
             <h2>Solicitações</h2>
+            <div class="cards-solicitacoes" id="card-solicitacoes-pendentes"></div>
+            <div class="cards-solicitacoes" id="card-solicitacoes"></div>
         </div>
 
-        <div class="horarios">
-            <div class="container">
-                <h2>Horários</h2>
+        <div class="container">
+            <h2>Horários</h2>
             <div class="tabelas" id="tabelas">
             </div>
-            </div>
         </div>
+
         <div class="form">
             <h1>Editar vagas</h1>
             <select id="dia" class="input" name="category" required>
@@ -31,9 +33,10 @@
             </select>
             <button id="save_changes" class="button-disabled" type="submit" disabled>Salvar Alterações</button>
         </div>
+    </div>
 
-        <script src="js/operador.js"></script>
-        <script src="js/tabela.js"></script>
+    <script src="js/operador.js"></script>
+    <script src="js/tabela.js"></script>
 </body>
 
 </html>

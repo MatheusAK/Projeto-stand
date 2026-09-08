@@ -1,19 +1,21 @@
 // Esse arquivo fará as requisições de dados do banco sem alterar os dados,
 // apenas para o usuário visualizar os horários disponíveis.
 
-const selectedia = document.getElementById("dia");
+const selectDia = document.getElementById("dia");
 const selectHorario = document.getElementById("horario");
+const buttonEnviar = document.getElementById("enviar");
+
+// Guarda os horários buscados uma única vez, pra reaproveitar
+// no filtro por dia sem precisar refazer a requisição a cada troca.
+let horariosCache = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
-
-    const selectDia = document.getElementById("dia");
-
     const resposta = await fetch("/api/horarios");
-    const horarios = await resposta.json();
+    horariosCache = await resposta.json();
 
     // Pega somente os dias existentes
     const dias = [...new Set(
-        horarios.map(horario => horario.dia)
+        horariosCache.map(horario => horario.dia)
     )];
 
     // Cria uma option para cada dia
@@ -27,19 +29,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 });
 
-selectedia.addEventListener("change", async () => {
-    // Busca os horários no backend
-    const resposta = await fetch("/api/horarios");
-    const horarios = await resposta.json();
-
+selectDia.addEventListener("change", () => {
     // Limpa os horários anteriores
     selectHorario.innerHTML = `
         <option value="">Selecione um horário</option>
     `;
 
-    // Filtra pelo dia selecionado
-    const horariosDoDia = horarios.filter(
-        horario => horario.dia === selectedia.value
+    // Filtra pelo dia selecionado, usando o cache já buscado
+    const horariosDoDia = horariosCache.filter(
+        horario => horario.dia === selectDia.value
     );
 
     // Cria as options
@@ -51,4 +49,28 @@ selectedia.addEventListener("change", async () => {
 
         selectHorario.appendChild(option);
     });
+
+    // Libera o select de horário, que começa travado no HTML
+    selectHorario.disabled = false;
+});
+
+buttonEnviar.addEventListener("click", async () => {
+
+    try {
+        const resposta = await fetch(`/api/solicitacoes`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ pessoa: nome.value, id_horario: selectHorario.value })
+        });
+
+        if (!resposta.ok) {
+            throw new Error(`Erro ao enviar solicitação: ${resposta.status}`);
+        }
+
+        location.reload();
+
+    } catch (erro) {
+        console.error(erro);
+        alert("Não foi possível enviar a solicitação. Tente novamente.");
+    }
 });

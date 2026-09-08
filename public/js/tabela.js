@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("tabelas");
     const resposta = await fetch("/api/horarios");
     const horarios = await resposta.json();
+    const resposta2 = await fetch("/api/solicitacoes");
+    const solicitacoes = await resposta2.json();
     console.log(horarios);
 
     const dias = [...new Set(
@@ -64,7 +66,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             trbody.appendChild(tdHorario);
 
             const tdOcupante = document.createElement("td");
-            tdOcupante.textContent = item.ocupante ?? "—"; // se ainda não existe essa info na API, deixa placeholder
+            solicitacoes.forEach(solicitacao => {
+                if (solicitacao.id_horario == item.id_horario) {
+                    tdOcupante.textContent = (`${tdOcupante.textContent} ${solicitacao.pessoa};`);
+                }
+            });
             trbody.appendChild(tdOcupante);
         });
     });

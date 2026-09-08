@@ -16,8 +16,8 @@ h1, h2 {
 }
 
 .main {
-    min-height: 100vh;
 
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -42,7 +42,7 @@ h1, h2 {
     margin: 0 0 20px;
 }
 
-.solicitacoes {
+.container {
     width: min(100%, 900px);
 
     display: flex;
@@ -55,10 +55,10 @@ h1, h2 {
     border-radius: 15px;
 }
 
-.container {
+.cards-solicitacoes {
     width: min(100%, 900px);
-
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
@@ -66,6 +66,86 @@ h1, h2 {
 
     border: 1px solid #370057;
     border-radius: 15px;
+}
+
+.card-solicitacao {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    padding: 12px;
+
+    overflow-x: auto;
+}
+
+.card-pessoa,
+.card-horario,
+.card-status {
+    flex: 1 1 200px; /* cresce, encolhe, mas prefere no mínimo 200px */
+    max-width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 10px;
+}
+.card-acoes {
+    display: flex;
+    gap: 8px;
+    flex: 1 1 100%; /* ocupa a linha toda embaixo, no card */
+    justify-content: flex-end;
+}
+
+.btn-aceitar,
+.btn-recusar {
+    border: none;
+    border-radius: 6px;
+
+    padding: 6px 14px;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: background-color 0.15s ease;
+}
+
+.btn-aceitar {
+    background-color: #1a7a3d;
+    color: white;
+}
+.btn-aceitar:hover {
+    background-color: #145c2e;
+}
+
+.btn-recusar {
+    background-color: #b02a2a;
+    color: white;
+}
+.btn-recusar:hover {
+    background-color: #8a2020;
+}
+
+.status-aceito {
+    background-color: #d4f5dd;
+}
+.status-aceito .card-valor {
+    color: #1a7a3d;
+}
+
+.status-pendente {
+    background-color: #fdf3d0;
+}
+.status-pendente .card-valor {
+    color: #8a6d00;
+}
+.status-recusado {
+    background-color: #fbdcdc;
 }
 
 .tabelas {
