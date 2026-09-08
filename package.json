@@ -1,0 +1,28 @@
+{
+  "name": "projeto-stand",
+  "version": "1.0.0",
+  "description": "",
+  "main": "form_visuals.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatheusAK/Projeto-stand.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MatheusAK/Projeto-stand/issues"
+  },
+  "homepage": "https://github.com/MatheusAK/Projeto-stand#readme",
+  "dependencies": {
+    "@vercel/blob": "^2.8.0",
+    "express": "^5.2.1"
+  }
+}
