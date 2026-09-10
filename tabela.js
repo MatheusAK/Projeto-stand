@@ -80,50 +80,92 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    solicitacoes.forEach(solicitacao => {
-        const card = document.createElement("div");
-        card.classList.add("card-solicitacao");
+    solicitacoes.reverse().forEach(solicitacao => {
+    const card = document.createElement("div");
+    card.classList.add("card-solicitacao");
 
-        const pendente = solicitacao.status === "Pendente";
+    const pendente = solicitacao.status === "Pendente";
 
-        const horario = horarios.find(
-            horario => horario.id_horario == solicitacao.id_horario
-        );
+    const horario = horarios.find(
+        horario => horario.id_horario == solicitacao.id_horario
+    );
 
-        const hora = horario ? horario.hora : "Horário não encontrado";
-        const dia = horario ? horario.dia : "Dia não encontrado";
+    const hora = horario ? horario.hora : "Horário não encontrado";
+    const dia = horario ? horario.dia : "Dia não encontrado";
 
-        card.innerHTML = `
-            <div class="card-pessoa">
-                <span class="card-valor">${solicitacao.pessoa}</span>
-            </div>
+    card.innerHTML = `
+        <div class="card-pessoa">
+            <span class="card-valor">${solicitacao.pessoa}</span>
+        </div>
 
-            <div class="card-horario">
-                <span class="card-valor">${dia}</span>
-                <span class="card-valor">${hora}</span>
-            </div>
+        <div class="card-horario">
+            <span class="card-valor">${dia}</span>
+            <span class="card-valor">${hora}</span>
+        </div>
 
-            <div class="card-status status-${solicitacao.status.toLowerCase()}">
-                <span class="card-valor">${solicitacao.status}</span>
-            </div>
+        <select class="card-status status-${solicitacao.status.toLowerCase()}">
+            <option class="card-valor" selected>
+                ${solicitacao.status}
+            </option>
 
-            ${pendente ? `
-                <div class="card-acoes">
-                    <button class="btn-aceitar" data-id="${solicitacao.id_solicitacao}">
-                        Aceitar
-                    </button>
+            ${
+                solicitacao.status === "Pendente"
+                ? `
+                    <option value="Aceito">Aceito</option>
+                    <option value="Recusado">Recusado</option>
+                `
+                : solicitacao.status === "Aceito"
+                ? `
+                    <option value="Pendente">Pendente</option>
+                    <option value="Recusado">Recusado</option>
+                `
+                : `
+                    <option value="Pendente">Pendente</option>
+                    <option value="Aceito">Aceito</option>
+                `
+            }
+        </select>
+    `;
 
-                    <button class="btn-recusar" data-id="${solicitacao.id_solicitacao}">
-                        Recusar
-                    </button>
-                </div>
-            ` : ""}
-        `;
+    // Pega o select DESSE card
+    const solicitacaoStatus = card.querySelector(".card-status");
 
-        if (pendente) {
-            containerPendentes.appendChild(card);
-        } else {
-            containerCards.appendChild(card);
+    solicitacaoStatus.addEventListener("change", async (event) => {
+        const novoStatus = event.target.value;
+        solicitacaoStatus.disabled = true;
+
+        try {
+            const resposta = await fetch(
+                `/api/solicitacoes/${solicitacao.id_solicitacao}`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        status: novoStatus
+                    })
+                }
+            );
+
+            if (!resposta.ok) {
+                throw new Error(
+                    `Erro ao atualizar solicitação: ${resposta.status}`
+                );
+            }
+
+            location.reload();
+
+        } catch (erro) {
+            console.error(erro);
+            alert("Não foi possível atualizar a solicitação. Tente novamente.");
         }
     });
+
+    if (pendente) {
+        containerPendentes.appendChild(card);
+    } else {
+        containerCards.appendChild(card);
+    }
+});
 });
