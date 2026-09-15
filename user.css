@@ -31,7 +31,7 @@ h1, h2, p {
 
     font-size: clamp(1.6rem, 4vw, 2.5rem);
 
-    margin: 0 0 30px;
+    margin: 0;
 }
 
 .container {
@@ -185,11 +185,7 @@ h1, h2, p {
     .main {
         padding: 20px 10px;
     }
-
-    .main h1 {
-        margin-bottom: 20px;
-    }
-
+    
     .form {
         width: 100%;
 

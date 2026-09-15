@@ -11,7 +11,19 @@ let horariosCache = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
     const resposta = await fetch("/api/horarios");
-    horariosCache = await resposta.json();
+    const respostaSolicitacoes = await fetch("/api/solicitacoes");
+    const solicitacoes = await respostaSolicitacoes.json();
+    const horarios = await resposta.json();
+
+    const idsHorariosFixos = new Set(
+        solicitacoes
+            .filter(solicitacao => solicitacao.status === "Fixo")
+            .map(solicitacao => String(solicitacao.id_horario))
+    );
+
+    horariosCache = horarios.filter(
+        horario => !idsHorariosFixos.has(String(horario.id_horario))
+    );
 
     // Pega somente os dias existentes
     const dias = [...new Set(

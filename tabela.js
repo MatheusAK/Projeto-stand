@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     dias.forEach(dia => {
+
         const divTabela = document.createElement("div");
         divTabela.classList.add("tabela");
         container.appendChild(divTabela);
@@ -68,9 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const tdOcupante = document.createElement("td");
 
             solicitacoes.forEach(solicitacao => {
-                if (
-                    solicitacao.id_horario == item.id_horario &&
-                    solicitacao.status == "Aceito"
+                if (solicitacao.id_horario == item.id_horario && (solicitacao.status == "Aceito" || solicitacao.status == "Fixo")
                 ) {
                     tdOcupante.textContent += `${solicitacao.pessoa}; `;
                 }
@@ -113,15 +112,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                 ? `
                     <option value="Aceito">Aceito</option>
                     <option value="Recusado">Recusado</option>
+                    <option value="Fixo">Horário Fixo</option>
                 `
                 : solicitacao.status === "Aceito"
                 ? `
                     <option value="Pendente">Pendente</option>
                     <option value="Recusado">Recusado</option>
+                    <option value="Fixo">Horário Fixo</option>
+                `
+                : solicitacao.status === "Fixo"
+                ? `
+                    <option value="Pendente">Pendente</option>
+                    <option value="Recusado">Recusado</option>
+                    <option value="Aceito">Aceito</option>
                 `
                 : `
                     <option value="Pendente">Pendente</option>
                     <option value="Aceito">Aceito</option>
+                    <option value="Fixo">Horário Fixo</option>
                 `
             }
         </select>

@@ -22,7 +22,7 @@ app.patch("/api/solicitacoes/:id", async (req, res) => {
     const { id } = req.params;
     const { status } = req.body;
 
-    const statusValidos = ["Aceito", "Pendente", "Recusado"];
+    const statusValidos = ["Aceito", "Pendente", "Recusado", "Fixo"];
     if (!statusValidos.includes(status)) {
         return res.status(400).json({ erro: "Status inválido." });
     }
@@ -73,9 +73,9 @@ app.post("/api/solicitacoes", async (req, res) => {
 
 app.delete("/api/solicitacoes", async (req, res) => {
     const dados = await lerDados();
-    const linhasApagadas = dados.solicitacoes.length;
-
-    dados.solicitacoes = [];
+    const linhasApagadas = dados.solicitacoes.filter(solicitacao => solicitacao.status !== "Fixo").length;
+    
+    dados.solicitacoes = dados.solicitacoes.filter(solicitacao => solicitacao.status === "Fixo");
     await salvarDados(dados);
 
     // Como o próximo id é sempre "maior id atual + 1", zerar o array
