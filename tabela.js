@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         trHead.appendChild(thHorario);
 
         const thOcupante = document.createElement("th");
-        thOcupante.textContent = "Ocupante";
+        thOcupante.textContent = "Designados";
         trHead.appendChild(thOcupante);
 
         const tbody = document.createElement("tbody");
